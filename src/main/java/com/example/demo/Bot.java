@@ -1,27 +1,29 @@
 package com.example.demo;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Contact;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.User;
+import com.example.demo.model.Birthday;
+import com.example.demo.service.BirthdayService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+@Service
 public class Bot extends TelegramLongPollingBot {
 
+    @Autowired
+    private BirthdayService birthdayService;
 
     /**
      * Метод для приема сообщений.
@@ -32,51 +34,37 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
-        if(isNull(message)){
+        if (isNull(message)) {
             return;
         }
         String text = message.getText();
-        if(isEmpty(text)){
+        if (isEmpty(text)) {
             return;
         }
         User from = message.getFrom();
         Long chatId = message.getChatId();
 
-        if(text.contains("/setBirthday")){
+        if (text.contains("/setBirthday")) {
+            Integer userID = from.getId();
+            System.out.println("userID = " + userID);
+            System.out.println("chatId = " + chatId);
+
             String maybeDate = text.replace("/setBirthday", "").trim();
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM");
             try {
                 Date parse = sdf.parse(maybeDate);
                 System.out.println("parse = " + parse);
+                Birthday birthday = new Birthday(chatId, userID, parse);
+                birthdayService.saveOrUpdate(birthday);
             } catch (ParseException e) {
                 text = "Use example: /setBirthday 31-12";
             }
-            Integer userID = from.getId();
-            System.out.println("maybeDate = " + maybeDate);
-            System.out.println("userID = " + userID);
-            System.out.println("chatId = " + chatId);
         }
-        sendMsg(chatId.toString(), text);
     }
 
-
-    /**
-     * Метод для настройки сообщения и его отправки.
-     *
-     * @param chatId id чата
-     * @param s      Строка, которую необходимот отправить в качестве сообщения.
-     */
-
-    public synchronized void sendMsg(String chatId, String s) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(s);
-        try {
-            sendMessage(sendMessage);
-        } catch (TelegramApiException e) {
-//            log.log(Level.SEVERE, "Exception: ", e.toString());
-        }
+    @Override
+    public void onUpdatesReceived(List<Update> updates) {
+        updates.forEach(this::onUpdateReceived);
     }
 
 
@@ -98,7 +86,7 @@ public class Bot extends TelegramLongPollingBot {
      * @return token для бота
      */
 
-    @Value("${bot_token}")
+//    @Value("${bot.token}")
     private String botToken;
 
     @Override

@@ -1,38 +1,28 @@
 package com.example.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @SpringBootApplication
-@SpringBootConfiguration
 public class DemoApplication {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DemoApplication.class);
 
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(DemoApplication.class, args);
-//        Bot bot = new Bot();
+        ConfigurableApplicationContext context = SpringApplication.run(DemoApplication.class, args);
+        Bot bot = (Bot) context.getBean("bot");
 
-        ApiContextInitializer.init();
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-        Bot bot =new Bot();
-//        Bot bot = context.getBean(Bot.class);
         try {
+            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(bot);
-        } catch (TelegramApiRequestException e) {
-            e.printStackTrace();
+        } catch (TelegramApiException e) {
+            LOGGER.error(e.getMessage());
         }
     }
-
-//        @Bean
-//        Bot myBean() {
-//        return new Bot();
-//    }
-
 }
