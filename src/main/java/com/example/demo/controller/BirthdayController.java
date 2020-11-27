@@ -18,19 +18,19 @@ public class BirthdayController {
         return birthdayService.getAllBirthdays();
     }
 
-    @GetMapping("/birthdays/{id}")
-    private Birthday getBirthdays(@PathVariable("id") int id) {
-        return birthdayService.getBirthdaysById(id);
-    }
+//    @GetMapping("/birthdays/{id}")
+//    private Birthday getBirthdays(@PathVariable("id") int id) {
+//        return birthdayService.getBirthdaysById(id);
+//    }
+//
+//    @DeleteMapping("/birthdays/{id}")
+//    private void deleteBirthday(@PathVariable("id") int id) {
+//        birthdayService.delete(id);
+//    }
 
-    @DeleteMapping("/birthdays/{id}")
-    private void deleteBirthday(@PathVariable("id") int id) {
-        birthdayService.delete(id);
-    }
-
-    @PostMapping("/birthdays")
-    private int saveBirthday(@RequestBody Birthday birthday) {
-        birthdayService.saveOrUpdate(birthday);
-        return birthday.getId();
-    }
+//    @PostMapping("/birthdays")
+//    private int saveBirthday(@RequestBody Birthday birthday) {
+//        birthdayService.saveOrUpdate(birthday);
+//        return birthday.getId();
+//    }
 }

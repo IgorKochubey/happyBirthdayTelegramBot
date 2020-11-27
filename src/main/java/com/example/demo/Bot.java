@@ -13,6 +13,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -50,13 +53,11 @@ public class Bot extends TelegramLongPollingBot {
             System.out.println("chatId = " + chatId);
 
             String maybeDate = text.replace("/setBirthday", "").trim();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM");
             try {
-                Date parse = sdf.parse(maybeDate);
-                System.out.println("parse = " + parse);
-                Birthday birthday = new Birthday(chatId, userID, parse);
+                LocalDate localDate = LocalDate.parse(maybeDate + "-" +LocalDate.now().getYear(), DateTimeFormatter.ofPattern("dd-MM-uuuu"));
+                Birthday birthday = new Birthday(chatId, userID, localDate);
                 birthdayService.saveOrUpdate(birthday);
-            } catch (ParseException e) {
+            } catch (DateTimeParseException e) {
                 text = "Use example: /setBirthday 31-12";
             }
         }
