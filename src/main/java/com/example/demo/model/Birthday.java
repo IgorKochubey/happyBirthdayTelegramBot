@@ -17,6 +17,7 @@ public class Birthday {
     private Integer userId;
     private Long chatId;
     private LocalDate birthdayDate;
+    private boolean isResponsible;
 
     public Birthday() {
     }

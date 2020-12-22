@@ -5,21 +5,17 @@ import com.example.demo.service.BirthdayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Service
@@ -46,19 +42,41 @@ public class Bot extends TelegramLongPollingBot {
         }
         User from = message.getFrom();
         Long chatId = message.getChatId();
+        Integer userID = from.getId();
 
         if (text.contains("/setBirthday")) {
-            Integer userID = from.getId();
             System.out.println("userID = " + userID);
             System.out.println("chatId = " + chatId);
 
             String maybeDate = text.replace("/setBirthday", "").trim();
             try {
-                LocalDate localDate = LocalDate.parse(maybeDate + "-" +LocalDate.now().getYear(), DateTimeFormatter.ofPattern("dd-MM-uuuu"));
+                LocalDate localDate = LocalDate.parse(maybeDate + "-" + LocalDate.now().getYear(), DateTimeFormatter.ofPattern("dd-MM-uuuu"));
                 Birthday birthday = new Birthday(chatId, userID, localDate);
                 birthdayService.saveOrUpdate(birthday);
             } catch (DateTimeParseException e) {
                 text = "Use example: /setBirthday 31-12";
+            }
+        }
+
+        if (text.contains("/setResponsible")) {
+            System.out.println("chatId = " + chatId);
+
+            String maybeResponsible = text.replace("/setResponsible", "").trim();
+            try {
+                boolean isResponsible = Boolean.parseBoolean(maybeResponsible);
+                Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
+                if (nonNull(birthdayByUserIdAndChatId)) {
+                    birthdayByUserIdAndChatId.setResponsible(isResponsible);
+
+                    long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
+                    if (countResponsibleOfChat > 2) {
+                        System.out.println("countResponsibleOfChat = " + countResponsibleOfChat);
+                        return;
+                    }
+                    birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
+                }
+            } catch (DateTimeParseException e) {
+                text = "Use example: /setResponsible true";
             }
         }
     }
