@@ -5,9 +5,11 @@ import com.example.demo.service.BirthdayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -55,6 +57,7 @@ public class Bot extends TelegramLongPollingBot {
                 birthdayService.saveOrUpdate(birthday);
             } catch (DateTimeParseException e) {
                 text = "Use example: /setBirthday 31-12";
+                sendMsg(chatId, text);
             }
         }
 
@@ -77,7 +80,27 @@ public class Bot extends TelegramLongPollingBot {
                 }
             } catch (DateTimeParseException e) {
                 text = "Use example: /setResponsible true";
+                sendMsg(chatId, text);
             }
+        }
+    }
+
+    /**
+     * Метод для настройки сообщения и его отправки.
+     *
+     * @param chatId id чата
+     * @param s      Строка, которую необходимот отправить в качестве сообщения.
+     */
+
+    private synchronized void sendMsg(Long chatId, String s) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(chatId.toString());
+        sendMessage.setText(s);
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+//            log.log(Level.SEVERE, "Exception: ", e.toString());
         }
     }
 
