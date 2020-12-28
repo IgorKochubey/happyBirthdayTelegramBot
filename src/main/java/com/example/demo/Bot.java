@@ -64,24 +64,39 @@ public class Bot extends TelegramLongPollingBot {
         if (text.contains("/setResponsible")) {
             System.out.println("chatId = " + chatId);
 
-            String maybeResponsible = text.replace("/setResponsible", "").trim();
-            try {
-                boolean isResponsible = Boolean.parseBoolean(maybeResponsible);
+                boolean isResponsible = true;
                 Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
-                if (nonNull(birthdayByUserIdAndChatId)) {
+                if (nonNull(birthdayByUserIdAndChatId) && !birthdayByUserIdAndChatId.isResponsible()) {
                     birthdayByUserIdAndChatId.setResponsible(isResponsible);
 
                     long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
-                    if (countResponsibleOfChat > 2) {
-                        System.out.println("countResponsibleOfChat = " + countResponsibleOfChat);
+                    if (countResponsibleOfChat >= 2) {
+                        text = "Sorry, but this chat has 2 responsible users now";
+                        sendMsg(chatId, text);
                         return;
                     }
                     birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
                 }
-            } catch (DateTimeParseException e) {
-                text = "Use example: /setResponsible true";
-                sendMsg(chatId, text);
-            }
+
+        }
+
+        if (text.contains("/unsetResponsible")) {
+            System.out.println("chatId = " + chatId);
+
+                boolean isResponsible = false;
+                Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
+                if (nonNull(birthdayByUserIdAndChatId) && birthdayByUserIdAndChatId.isResponsible()) {
+                    birthdayByUserIdAndChatId.setResponsible(isResponsible);
+
+                    long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
+                    if (countResponsibleOfChat != 2) {
+                        text = "Sorry, but this chat should has 2 responsible users";
+                        sendMsg(chatId, text);
+                        return;
+                    }
+                    birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
+                }
+
         }
     }
 
