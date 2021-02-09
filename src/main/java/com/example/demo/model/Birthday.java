@@ -14,17 +14,19 @@ public class Birthday {
     @Id
     @GeneratedValue
     private int id;
-    private Integer userId;
+    private Long userId;
+    private String userName;
     private Long chatId;
     private LocalDate birthdayDate;
-    private boolean isResponsible;
+    private boolean responsible;
 
     public Birthday() {
     }
 
-    public Birthday(Long chatId, Integer userId, LocalDate birthdayDate) {
+    public Birthday(Long chatId, Long userId, LocalDate birthdayDate, String userName) {
         this.chatId = chatId;
         this.userId = userId;
         this.birthdayDate = birthdayDate;
+        this.userName = userName;
     }
 }
