@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.model.Birthday;
 import com.example.demo.service.BirthdayService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -20,6 +21,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+@Slf4j
 @Service
 public class Bot extends TelegramLongPollingBot {
 
@@ -44,16 +46,17 @@ public class Bot extends TelegramLongPollingBot {
         }
         User from = message.getFrom();
         Long chatId = message.getChatId();
-        Integer userID = from.getId();
+        Long userID = new Long(from.getId());
+        String userName = from.getUserName();
+        if (isEmpty(userName)) {
+            userName = from.getFirstName() + " " + from.getLastName();
+        }
 
         if (text.contains("/setBirthday")) {
-            System.out.println("userID = " + userID);
-            System.out.println("chatId = " + chatId);
-
             String maybeDate = text.replace("/setBirthday", "").trim();
             try {
-                LocalDate localDate = LocalDate.parse(maybeDate + "-" + LocalDate.now().getYear(), DateTimeFormatter.ofPattern("dd-MM-uuuu"));
-                Birthday birthday = new Birthday(chatId, userID, localDate);
+                LocalDate localDate = LocalDate.parse(maybeDate + "-" + 1900, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
+                Birthday birthday = new Birthday(chatId, userID, localDate, userName);
                 birthdayService.saveOrUpdate(birthday);
             } catch (DateTimeParseException e) {
                 text = "Use example: /setBirthday 31-12";
@@ -64,38 +67,38 @@ public class Bot extends TelegramLongPollingBot {
         if (text.contains("/setResponsible")) {
             System.out.println("chatId = " + chatId);
 
-                boolean isResponsible = true;
-                Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
-                if (nonNull(birthdayByUserIdAndChatId) && !birthdayByUserIdAndChatId.isResponsible()) {
-                    birthdayByUserIdAndChatId.setResponsible(isResponsible);
+            boolean isResponsible = true;
+            Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
+            if (nonNull(birthdayByUserIdAndChatId) && !birthdayByUserIdAndChatId.isResponsible()) {
+                birthdayByUserIdAndChatId.setResponsible(isResponsible);
 
-                    long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
-                    if (countResponsibleOfChat >= 2) {
-                        text = "Sorry, but this chat has 2 responsible users now";
-                        sendMsg(chatId, text);
-                        return;
-                    }
-                    birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
+                long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
+                if (countResponsibleOfChat >= 2) {
+                    text = "Sorry, but this chat has 2 responsible users now";
+                    sendMsg(chatId, text);
+                    return;
                 }
+                birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
+            }
 
         }
 
         if (text.contains("/unsetResponsible")) {
             System.out.println("chatId = " + chatId);
 
-                boolean isResponsible = false;
-                Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
-                if (nonNull(birthdayByUserIdAndChatId) && birthdayByUserIdAndChatId.isResponsible()) {
-                    birthdayByUserIdAndChatId.setResponsible(isResponsible);
+            boolean isResponsible = false;
+            Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
+            if (nonNull(birthdayByUserIdAndChatId) && birthdayByUserIdAndChatId.isResponsible()) {
+                birthdayByUserIdAndChatId.setResponsible(isResponsible);
 
-                    long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
-                    if (countResponsibleOfChat != 2) {
-                        text = "Sorry, but this chat should has 2 responsible users";
-                        sendMsg(chatId, text);
-                        return;
-                    }
-                    birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
+                long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
+                if (countResponsibleOfChat != 2) {
+                    text = "Sorry, but this chat should has 2 responsible users";
+                    sendMsg(chatId, text);
+                    return;
                 }
+                birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
+            }
 
         }
     }
@@ -107,7 +110,7 @@ public class Bot extends TelegramLongPollingBot {
      * @param s      Строка, которую необходимот отправить в качестве сообщения.
      */
 
-    private synchronized void sendMsg(Long chatId, String s) {
+    public synchronized void sendMsg(Long chatId, String s) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId.toString());
@@ -115,7 +118,7 @@ public class Bot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
-//            log.log(Level.SEVERE, "Exception: ", e.toString());
+            log.error("Exception: ", e);
         }
     }
 
