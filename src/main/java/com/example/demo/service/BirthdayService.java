@@ -2,11 +2,13 @@ package com.example.demo.service;
 
 import com.example.demo.model.Birthday;
 import com.example.demo.repository.BirthdayRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BirthdayService {
@@ -18,7 +20,7 @@ public class BirthdayService {
         return birthdayRepository.findAll();
     }
 
-    public Birthday getBirthdayByUserIdAndChatId(int userId, long chatId) {
+    public Birthday getBirthdayByUserIdAndChatId(Long userId, long chatId) {
         return birthdayRepository.findByUserIdAndChatId(userId, chatId);
     }
 
@@ -26,15 +28,18 @@ public class BirthdayService {
         birthdayRepository.save(birthday);
     }
 
-    public void delete(int id) {
-        birthdayRepository.deleteById(id);
+    public long getCountResponsibleOfChat(Long chatId) {
+        return birthdayRepository.countByChatIdAndResponsibleIsTrue(chatId);
     }
 
-    public long getCountResponsibleOfChat(Long chatId) {
-        Birthday example = new Birthday();
-        example.setChatId(chatId);
-        example.setResponsible(true);
+    public List<Birthday> findByBirthdayDate(LocalDate birthdayDate) {
+        return birthdayRepository.findByBirthdayDate(birthdayDate);
+    }
 
-        return birthdayRepository.count(Example.of(example));
+    public List<Long> getResponsibleUsersByChat(Long chatId) {
+        List<Birthday> byChatIdAndResponsibleTrue = birthdayRepository.findByChatIdAndResponsibleTrue(chatId);
+        return CollectionUtils.emptyIfNull(byChatIdAndResponsibleTrue).stream()
+                .map(Birthday::getUserId)
+                .collect(Collectors.toList());
     }
 }
