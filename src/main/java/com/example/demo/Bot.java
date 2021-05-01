@@ -46,7 +46,7 @@ public class Bot extends TelegramLongPollingBot {
         }
         User from = message.getFrom();
         Long chatId = message.getChatId();
-        Long userID = new Long(from.getId());
+        Long userID = Long.valueOf(from.getId());
         String userName = from.getUserName();
         if (isEmpty(userName)) {
             userName = from.getFirstName() + " " + from.getLastName();
@@ -65,7 +65,6 @@ public class Bot extends TelegramLongPollingBot {
         }
 
         if (text.contains("/setResponsible")) {
-            System.out.println("chatId = " + chatId);
 
             boolean isResponsible = true;
             Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
@@ -84,8 +83,6 @@ public class Bot extends TelegramLongPollingBot {
         }
 
         if (text.contains("/unsetResponsible")) {
-            System.out.println("chatId = " + chatId);
-
             boolean isResponsible = false;
             Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
             if (nonNull(birthdayByUserIdAndChatId) && birthdayByUserIdAndChatId.isResponsible()) {
@@ -151,6 +148,6 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "1425765610:AAFpRNJJjgxAc3qHqY2amljOVsZFWzixyMw";//botToken;
+        return "1425765610:AAFpRNJJjgxAc3qHqY2amljOVsZFWzixyMw";
     }
 }
