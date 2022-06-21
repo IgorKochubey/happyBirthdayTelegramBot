@@ -52,53 +52,6 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     /**
-     * Метод для настройки сообщения и его отправки.
-     *
-     * @param chatId id чата
-     * @param s      Строка, которую необходимот отправить в качестве сообщения.
-     */
-    public synchronized void sendMsg(Long chatId, String s) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId.toString());
-        sendMessage.setText(s);
-        setButtons(sendMessage);
-        try {
-            execute(sendMessage);
-        } catch (TelegramApiException e) {
-            log.error("Exception: ", e);
-        }
-    }
-
-    private synchronized void setButtons(SendMessage sendMessage) {
-        // Создаем клавиуатуру
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        sendMessage.setReplyMarkup(replyKeyboardMarkup);
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-
-        // Создаем список строк клавиатуры
-        List<KeyboardRow> keyboard = new ArrayList<>();
-
-        // Первая строчка клавиатуры
-        KeyboardRow keyboardFirstRow = new KeyboardRow();
-        // Добавляем кнопки в первую строчку клавиатуры
-        keyboardFirstRow.add(new KeyboardButton("Привет"));
-
-        // Вторая строчка клавиатуры
-        KeyboardRow keyboardSecondRow = new KeyboardRow();
-        // Добавляем кнопки во вторую строчку клавиатуры
-        keyboardSecondRow.add(new KeyboardButton("Помощь"));
-
-        // Добавляем все строчки клавиатуры в список
-        keyboard.add(keyboardFirstRow);
-        keyboard.add(keyboardSecondRow);
-        // и устанваливаем этот список нашей клавиатуре
-        replyKeyboardMarkup.setKeyboard(keyboard);
-    }
-
-    /**
      * Метод для приема сообщений.
      *
      * @param updates Содержит сообщение от пользователя.
@@ -115,17 +68,26 @@ public class Bot extends TelegramLongPollingBot {
      */
     @Override
     public void onUpdateReceived(Update update) {
-        try {
-            SendMessage sendMessage = null;
-            if (update.hasMessage()) {
-                sendMessage = messageService.doMessage(update);
-            } else if (update.hasCallbackQuery()) {
-                sendMessage = messageService.doCallback(update);
-            }
+        SendMessage sendMessage = null;
+        if (update.hasMessage()) {
+            sendMessage = messageService.doMessage(update);
+        } else if (update.hasCallbackQuery()) {
+            sendMessage = messageService.doCallback(update);
+        }
 
-            if (nonNull(sendMessage)) {
-                execute(sendMessage);
-            }
+        if (nonNull(sendMessage)) {
+            executeMessage(sendMessage);
+        }
+    }
+
+    /**
+     * Метод для отправки сообщения.
+     *
+     * @param sendMessage  содержит id чата и текст
+     */
+    public void executeMessage(SendMessage sendMessage) {
+        try {
+            execute(sendMessage);
         } catch (TelegramApiException e) {
             log.error("Exception: ", e);
         }
