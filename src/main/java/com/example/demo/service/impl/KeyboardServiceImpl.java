@@ -21,6 +21,8 @@ import java.util.stream.Stream;
 public class KeyboardServiceImpl implements KeyboardService {
     private static final int MONTH_IN_ROW = 3;
     private static final int DAY_IN_ROW = 5;
+    private static final int FIRST_DAY_OF_MONTH = 1;
+    private static final int LAST_DAY_OF_MONTH = 1;
 
     private final SendMessageFactory sendMessageFactory;
 
@@ -46,7 +48,7 @@ public class KeyboardServiceImpl implements KeyboardService {
     public SendMessage sendInlineKeyBoardMessageDay(long chatId, Month month) {
         int dayOfMonth = month.minLength();
 
-        List<InlineKeyboardButton> keyboardButtonsRow = IntStream.range(0, dayOfMonth)
+        List<InlineKeyboardButton> keyboardButtonsRow = IntStream.range(FIRST_DAY_OF_MONTH, dayOfMonth + LAST_DAY_OF_MONTH)
                 .mapToObj(value -> getInlineKeyboardButton(String.valueOf(value)))
                 .collect(Collectors.toList());
 

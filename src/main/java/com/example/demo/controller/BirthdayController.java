@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.facade.BotFacade;
 import com.example.demo.model.Birthday;
 import com.example.demo.scheduler.BirthdayCreationChatSchedule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,9 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.facade.BotFacade;
 import com.example.demo.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -26,6 +25,31 @@ public class Bot extends TelegramLongPollingBot {
         this.messageService = messageService;
     }
 
+    @Value("${bot.token}")
+    private String botToken;
+
+    @Value("${bot.name}")
+    private String botName;
+
+    /**
+     * Метод возвращает имя бота, указанное при регистрации.
+     *
+     * @return имя бота
+     */
+    @Override
+    public String getBotUsername() {
+        return botName;
+    }
+
+    /**
+     * Метод возвращает token бота для связи с сервером Telegram
+     *
+     * @return token для бота
+     */
+    @Override
+    public String getBotToken() {
+        return botToken;
+    }
 
     /**
      * Метод для настройки сообщения и его отправки.
@@ -33,7 +57,6 @@ public class Bot extends TelegramLongPollingBot {
      * @param chatId id чата
      * @param s      Строка, которую необходимот отправить в качестве сообщения.
      */
-
     public synchronized void sendMsg(Long chatId, String s) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
@@ -45,43 +68,6 @@ public class Bot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error("Exception: ", e);
         }
-    }
-
-    /**
-     * Метод для приема сообщений.
-     *
-     * @param updates Содержит сообщение от пользователя.
-     */
-    @Override
-    public void onUpdatesReceived(List<Update> updates) {
-        updates.forEach(this::onUpdateReceived);
-    }
-
-
-    /**
-     * Метод возвращает имя бота, указанное при регистрации.
-     *
-     * @return имя бота
-     */
-
-    @Override
-    public String getBotUsername() {
-        return "HappyBirthdayChatBot";
-    }
-
-    /**
-     * Метод возвращает token бота для связи с сервером Telegram
-     *
-     * @return token для бота
-     */
-
-//    @Value("${bot.token}")
-    private String botToken;
-
-
-    @Override
-    public String getBotToken() {
-        return "1425765610:AAFpRNJJjgxAc3qHqY2amljOVsZFWzixyMw";
     }
 
     private synchronized void setButtons(SendMessage sendMessage) {
@@ -111,24 +97,16 @@ public class Bot extends TelegramLongPollingBot {
         // и устанваливаем этот список нашей клавиатуре
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
-//    private InlineKeyboardMarkup getInline() {
-//        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-//        List<InlineKeyboardButton> buttons1 = new ArrayList<>();
-//        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-//        inlineKeyboardButton.setText("Кнопка");
-//        inlineKeyboardButton.setCallbackData("17");
-//
-//        buttons1.add(inlineKeyboardButton);
-//        buttons.add(buttons1);
-//
-//        InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
-//        markupKeyboard.setKeyboard(buttons);
-//        return markupKeyboard;
-//    }
 
-    //////////////
-
-
+    /**
+     * Метод для приема сообщений.
+     *
+     * @param updates Содержит сообщение от пользователя.
+     */
+    @Override
+    public void onUpdatesReceived(List<Update> updates) {
+        updates.forEach(this::onUpdateReceived);
+    }
 
     /**
      * Метод для приема сообщений.

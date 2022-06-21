@@ -6,6 +6,7 @@ import com.example.demo.strategy.callbackmessage.impl.NotFoundCallbackMessageStr
 import com.example.demo.strategy.message.MessageStrategy;
 import com.example.demo.strategy.message.impl.NotFoundMessageStrategy;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -27,6 +28,9 @@ public class MessageServiceImpl implements MessageService {
         this.callbackMessageStrategies = callbackMessageStrategies;
         this.messageStrategies = messageStrategies;
     }
+
+    @Value("${bot.name}")
+    private String botName;
 
     @Override
     public SendMessage doCallback(Update update) {
@@ -62,6 +66,6 @@ public class MessageServiceImpl implements MessageService {
         if (isEmpty(data)) {
             return null;
         }
-        return data.replace("@HappyBirthdayChatBot", EMPTY);
+        return data.replace("@" + botName, EMPTY);
     }
 }
