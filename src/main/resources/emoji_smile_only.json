@@ -1,0 +1,644 @@
+[
+  {
+    "emojiChar": "😄",
+    "emoji": "\uD83D\uDE04",
+    "description": "smiling face with open mouth and smiling eyes",
+    "aliases": [
+      "smile"
+    ],
+    "tags": [
+      "happy",
+      "joy",
+      "pleased"
+    ]
+  },
+  {
+    "emojiChar": "😃",
+    "emoji": "\uD83D\uDE03",
+    "description": "smiling face with open mouth",
+    "aliases": [
+      "smiley"
+    ],
+    "tags": [
+      "happy",
+      "joy",
+      "haha"
+    ]
+  },
+  {
+    "emojiChar": "😀",
+    "emoji": "\uD83D\uDE00",
+    "description": "grinning face",
+    "aliases": [
+      "grinning"
+    ],
+    "tags": [
+      "smile",
+      "happy"
+    ]
+  },
+  {
+    "emojiChar": "😊",
+    "emoji": "\uD83D\uDE0A",
+    "description": "smiling face with smiling eyes",
+    "aliases": [
+      "blush"
+    ],
+    "tags": [
+      "proud"
+    ]
+  },
+  {
+    "emojiChar": "☺",
+    "emoji": "\u263A",
+    "description": "white smiling face",
+    "aliases": [
+      "relaxed"
+    ],
+    "tags": [
+      "blush",
+      "pleased"
+    ]
+  },
+  {
+    "emojiChar": "😉",
+    "emoji": "\uD83D\uDE09",
+    "description": "winking face",
+    "aliases": [
+      "wink"
+    ],
+    "tags": [
+      "flirt"
+    ]
+  },
+  {
+    "emojiChar": "😍",
+    "emoji": "\uD83D\uDE0D",
+    "description": "smiling face with heart-shaped eyes",
+    "aliases": [
+      "heart_eyes"
+    ],
+    "tags": [
+      "love",
+      "crush"
+    ]
+  },
+  {
+    "emojiChar": "😘",
+    "emoji": "\uD83D\uDE18",
+    "description": "face throwing a kiss",
+    "aliases": [
+      "kissing_heart"
+    ],
+    "tags": [
+      "flirt"
+    ]
+  },
+  {
+    "emojiChar": "😚",
+    "emoji": "\uD83D\uDE1A",
+    "description": "kissing face with closed eyes",
+    "aliases": [
+      "kissing_closed_eyes"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😗",
+    "emoji": "\uD83D\uDE17",
+    "description": "kissing face",
+    "aliases": [
+      "kissing"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😙",
+    "emoji": "\uD83D\uDE19",
+    "description": "kissing face with smiling eyes",
+    "aliases": [
+      "kissing_smiling_eyes"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😜",
+    "emoji": "\uD83D\uDE1C",
+    "description": "face with stuck-out tongue and winking eye",
+    "aliases": [
+      "stuck_out_tongue_winking_eye"
+    ],
+    "tags": [
+      "prank",
+      "silly"
+    ]
+  },
+  {
+    "emojiChar": "😝",
+    "emoji": "\uD83D\uDE1D",
+    "description": "face with stuck-out tongue and tightly-closed eyes",
+    "aliases": [
+      "stuck_out_tongue_closed_eyes"
+    ],
+    "tags": [
+      "prank"
+    ]
+  },
+  {
+    "emojiChar": "😛",
+    "emoji": "\uD83D\uDE1B",
+    "description": "face with stuck-out tongue",
+    "aliases": [
+      "stuck_out_tongue"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😳",
+    "emoji": "\uD83D\uDE33",
+    "description": "flushed face",
+    "aliases": [
+      "flushed"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😁",
+    "emoji": "\uD83D\uDE01",
+    "description": "grinning face with smiling eyes",
+    "aliases": [
+      "grin"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😔",
+    "emoji": "\uD83D\uDE14",
+    "description": "pensive face",
+    "aliases": [
+      "pensive"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😌",
+    "emoji": "\uD83D\uDE0C",
+    "description": "relieved face",
+    "aliases": [
+      "relieved"
+    ],
+    "tags": [
+      "whew"
+    ]
+  },
+  {
+    "emojiChar": "😒",
+    "emoji": "\uD83D\uDE12",
+    "description": "unamused face",
+    "aliases": [
+      "unamused"
+    ],
+    "tags": [
+      "meh"
+    ]
+  },
+  {
+    "emojiChar": "😞",
+    "emoji": "\uD83D\uDE1E",
+    "description": "disappointed face",
+    "aliases": [
+      "disappointed"
+    ],
+    "tags": [
+      "sad"
+    ]
+  },
+  {
+    "emojiChar": "😣",
+    "emoji": "\uD83D\uDE23",
+    "description": "persevering face",
+    "aliases": [
+      "persevere"
+    ],
+    "tags": [
+      "struggling"
+    ]
+  },
+  {
+    "emojiChar": "😢",
+    "emoji": "\uD83D\uDE22",
+    "description": "crying face",
+    "aliases": [
+      "cry"
+    ],
+    "tags": [
+      "sad",
+      "tear"
+    ]
+  },
+  {
+    "emojiChar": "😂",
+    "emoji": "\uD83D\uDE02",
+    "description": "face with tears of joy",
+    "aliases": [
+      "joy"
+    ],
+    "tags": [
+      "tears"
+    ]
+  },
+  {
+    "emojiChar": "😭",
+    "emoji": "\uD83D\uDE2D",
+    "description": "loudly crying face",
+    "aliases": [
+      "sob"
+    ],
+    "tags": [
+      "sad",
+      "cry",
+      "bawling"
+    ]
+  },
+  {
+    "emojiChar": "😪",
+    "emoji": "\uD83D\uDE2A",
+    "description": "sleepy face",
+    "aliases": [
+      "sleepy"
+    ],
+    "tags": [
+      "tired"
+    ]
+  },
+  {
+    "emojiChar": "😥",
+    "emoji": "\uD83D\uDE25",
+    "description": "disappointed but relieved face",
+    "aliases": [
+      "disappointed_relieved"
+    ],
+    "tags": [
+      "phew",
+      "sweat",
+      "nervous"
+    ]
+  },
+  {
+    "emojiChar": "😰",
+    "emoji": "\uD83D\uDE30",
+    "description": "face with open mouth and cold sweat",
+    "aliases": [
+      "cold_sweat"
+    ],
+    "tags": [
+      "nervous"
+    ]
+  },
+  {
+    "emojiChar": "😅",
+    "emoji": "\uD83D\uDE05",
+    "description": "smiling face with open mouth and cold sweat",
+    "aliases": [
+      "sweat_smile"
+    ],
+    "tags": [
+      "hot"
+    ]
+  },
+  {
+    "emojiChar": "😓",
+    "emoji": "\uD83D\uDE13",
+    "description": "face with cold sweat",
+    "aliases": [
+      "sweat"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😩",
+    "emoji": "\uD83D\uDE29",
+    "description": "weary face",
+    "aliases": [
+      "weary"
+    ],
+    "tags": [
+      "tired"
+    ]
+  },
+  {
+    "emojiChar": "😫",
+    "emoji": "\uD83D\uDE2B",
+    "description": "tired face",
+    "aliases": [
+      "tired_face"
+    ],
+    "tags": [
+      "upset",
+      "whine"
+    ]
+  },
+  {
+    "emojiChar": "😨",
+    "emoji": "\uD83D\uDE28",
+    "description": "fearful face",
+    "aliases": [
+      "fearful"
+    ],
+    "tags": [
+      "scared",
+      "shocked",
+      "oops"
+    ]
+  },
+  {
+    "emojiChar": "😱",
+    "emoji": "\uD83D\uDE31",
+    "description": "face screaming in fear",
+    "aliases": [
+      "scream"
+    ],
+    "tags": [
+      "horror",
+      "shocked"
+    ]
+  },
+  {
+    "emojiChar": "😠",
+    "emoji": "\uD83D\uDE20",
+    "description": "angry face",
+    "aliases": [
+      "angry"
+    ],
+    "tags": [
+      "mad",
+      "annoyed"
+    ]
+  },
+  {
+    "emojiChar": "😡",
+    "emoji": "\uD83D\uDE21",
+    "description": "pouting face",
+    "aliases": [
+      "rage"
+    ],
+    "tags": [
+      "angry"
+    ]
+  },
+  {
+    "emojiChar": "😤",
+    "emoji": "\uD83D\uDE24",
+    "description": "face with look of triumph",
+    "aliases": [
+      "triumph"
+    ],
+    "tags": [
+      "smug"
+    ]
+  },
+  {
+    "emojiChar": "😖",
+    "emoji": "\uD83D\uDE16",
+    "description": "confounded face",
+    "aliases": [
+      "confounded"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😆",
+    "emoji": "\uD83D\uDE06",
+    "description": "smiling face with open mouth and tightly-closed eyes",
+    "aliases": [
+      "laughing",
+      "satisfied"
+    ],
+    "tags": [
+      "happy",
+      "haha"
+    ]
+  },
+  {
+    "emojiChar": "😋",
+    "emoji": "\uD83D\uDE0B",
+    "description": "face savouring delicious food",
+    "aliases": [
+      "yum"
+    ],
+    "tags": [
+      "tongue",
+      "lick"
+    ]
+  },
+  {
+    "emojiChar": "😷",
+    "emoji": "\uD83D\uDE37",
+    "description": "face with medical mask",
+    "aliases": [
+      "mask"
+    ],
+    "tags": [
+      "sick",
+      "ill"
+    ]
+  },
+  {
+    "emojiChar": "😎",
+    "emoji": "\uD83D\uDE0E",
+    "description": "smiling face with sunglasses",
+    "aliases": [
+      "sunglasses"
+    ],
+    "tags": [
+      "cool"
+    ]
+  },
+  {
+    "emojiChar": "😴",
+    "emoji": "\uD83D\uDE34",
+    "description": "sleeping face",
+    "aliases": [
+      "sleeping"
+    ],
+    "tags": [
+      "zzz"
+    ]
+  },
+  {
+    "emojiChar": "😵",
+    "emoji": "\uD83D\uDE35",
+    "description": "dizzy face",
+    "aliases": [
+      "dizzy_face"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😲",
+    "emoji": "\uD83D\uDE32",
+    "description": "astonished face",
+    "aliases": [
+      "astonished"
+    ],
+    "tags": [
+      "amazed",
+      "gasp"
+    ]
+  },
+  {
+    "emojiChar": "😟",
+    "emoji": "\uD83D\uDE1F",
+    "description": "worried face",
+    "aliases": [
+      "worried"
+    ],
+    "tags": [
+      "nervous"
+    ]
+  },
+  {
+    "emojiChar": "😦",
+    "emoji": "\uD83D\uDE26",
+    "description": "frowning face with open mouth",
+    "aliases": [
+      "frowning"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😧",
+    "emoji": "\uD83D\uDE27",
+    "description": "anguished face",
+    "aliases": [
+      "anguished"
+    ],
+    "tags": [
+      "stunned"
+    ]
+  },
+  {
+    "emojiChar": "😈",
+    "emoji": "\uD83D\uDE08",
+    "description": "smiling face with horns",
+    "aliases": [
+      "smiling_imp"
+    ],
+    "tags": [
+      "devil",
+      "evil",
+      "horns"
+    ]
+  },
+  {
+    "emojiChar": "👿",
+    "emoji": "\uD83D\uDC7F",
+    "description": "imp",
+    "aliases": [
+      "imp"
+    ],
+    "tags": [
+      "angry",
+      "devil",
+      "evil",
+      "horns"
+    ]
+  },
+  {
+    "emojiChar": "😮",
+    "emoji": "\uD83D\uDE2E",
+    "description": "face with open mouth",
+    "aliases": [
+      "open_mouth"
+    ],
+    "tags": [
+      "surprise",
+      "impressed",
+      "wow"
+    ]
+  },
+  {
+    "emojiChar": "😬",
+    "emoji": "\uD83D\uDE2C",
+    "description": "grimacing face",
+    "aliases": [
+      "grimacing"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😐",
+    "emoji": "\uD83D\uDE10",
+    "description": "neutral face",
+    "aliases": [
+      "neutral_face"
+    ],
+    "tags": [
+      "meh"
+    ]
+  },
+  {
+    "emojiChar": "😕",
+    "emoji": "\uD83D\uDE15",
+    "description": "confused face",
+    "aliases": [
+      "confused"
+    ],
+    "tags": []
+  },
+  {
+    "emojiChar": "😯",
+    "emoji": "\uD83D\uDE2F",
+    "description": "hushed face",
+    "aliases": [
+      "hushed"
+    ],
+    "tags": [
+      "silence",
+      "speechless"
+    ]
+  },
+  {
+    "emojiChar": "😶",
+    "emoji": "\uD83D\uDE36",
+    "description": "face without mouth",
+    "aliases": [
+      "no_mouth"
+    ],
+    "tags": [
+      "mute",
+      "silence"
+    ]
+  },
+  {
+    "emojiChar": "😇",
+    "emoji": "\uD83D\uDE07",
+    "description": "smiling face with halo",
+    "aliases": [
+      "innocent"
+    ],
+    "tags": [
+      "angel"
+    ]
+  },
+  {
+    "emojiChar": "😏",
+    "emoji": "\uD83D\uDE0F",
+    "description": "smirking face",
+    "aliases": [
+      "smirk"
+    ],
+    "tags": [
+      "smug"
+    ]
+  },
+  {
+    "emojiChar": "😑",
+    "emoji": "\uD83D\uDE11",
+    "description": "expressionless face",
+    "aliases": [
+      "expressionless"
+    ],
+    "tags": []
+  }
+  ]

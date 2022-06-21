@@ -1,104 +1,31 @@
 package com.example.demo;
 
-import com.example.demo.model.Birthday;
-import com.example.demo.service.BirthdayService;
+import com.example.demo.facade.BotFacade;
+import com.example.demo.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
+import java.util.*;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Slf4j
 @Service
 public class Bot extends TelegramLongPollingBot {
+    private final MessageService messageService;
 
-    @Autowired
-    private BirthdayService birthdayService;
-
-    /**
-     * Метод для приема сообщений.
-     *
-     * @param update Содержит сообщение от пользователя.
-     */
-
-    @Override
-    public void onUpdateReceived(Update update) {
-        Message message = update.getMessage();
-        if (isNull(message)) {
-            return;
-        }
-        String text = message.getText();
-        if (isEmpty(text)) {
-            return;
-        }
-        User from = message.getFrom();
-        Long chatId = message.getChatId();
-        Long userID = Long.valueOf(from.getId());
-        String userName = from.getUserName();
-        if (isEmpty(userName)) {
-            userName = from.getFirstName() + " " + from.getLastName();
-        }
-
-        if (text.contains("/setBirthday")) {
-            String maybeDate = text.replace("/setBirthday", "").trim();
-            try {
-                LocalDate localDate = LocalDate.parse(maybeDate + "-" + 1900, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
-                Birthday birthday = new Birthday(chatId, userID, localDate, userName);
-                birthdayService.saveOrUpdate(birthday);
-            } catch (DateTimeParseException e) {
-                text = "Use example: /setBirthday 31-12";
-                sendMsg(chatId, text);
-            }
-        }
-
-        if (text.contains("/setResponsible")) {
-
-            boolean isResponsible = true;
-            Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
-            if (nonNull(birthdayByUserIdAndChatId) && !birthdayByUserIdAndChatId.isResponsible()) {
-                birthdayByUserIdAndChatId.setResponsible(isResponsible);
-
-                long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
-                if (countResponsibleOfChat >= 2) {
-                    text = "Sorry, but this chat has 2 responsible users now";
-                    sendMsg(chatId, text);
-                    return;
-                }
-                birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
-            }
-
-        }
-
-        if (text.contains("/unsetResponsible")) {
-            boolean isResponsible = false;
-            Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userID, chatId);
-            if (nonNull(birthdayByUserIdAndChatId) && birthdayByUserIdAndChatId.isResponsible()) {
-                birthdayByUserIdAndChatId.setResponsible(isResponsible);
-
-                long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
-                if (countResponsibleOfChat != 2) {
-                    text = "Sorry, but this chat should has 2 responsible users";
-                    sendMsg(chatId, text);
-                    return;
-                }
-                birthdayService.saveOrUpdate(birthdayByUserIdAndChatId);
-            }
-
-        }
+    public Bot(MessageService messageService) {
+        this.messageService = messageService;
     }
+
 
     /**
      * Метод для настройки сообщения и его отправки.
@@ -112,6 +39,7 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(s);
+        setButtons(sendMessage);
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
@@ -119,6 +47,11 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
+    /**
+     * Метод для приема сообщений.
+     *
+     * @param updates Содержит сообщение от пользователя.
+     */
     @Override
     public void onUpdatesReceived(List<Update> updates) {
         updates.forEach(this::onUpdateReceived);
@@ -136,7 +69,6 @@ public class Bot extends TelegramLongPollingBot {
         return "HappyBirthdayChatBot";
     }
 
-
     /**
      * Метод возвращает token бота для связи с сервером Telegram
      *
@@ -146,8 +78,78 @@ public class Bot extends TelegramLongPollingBot {
 //    @Value("${bot.token}")
     private String botToken;
 
+
     @Override
     public String getBotToken() {
         return "1425765610:AAFpRNJJjgxAc3qHqY2amljOVsZFWzixyMw";
+    }
+
+    private synchronized void setButtons(SendMessage sendMessage) {
+        // Создаем клавиуатуру
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        // Создаем список строк клавиатуры
+        List<KeyboardRow> keyboard = new ArrayList<>();
+
+        // Первая строчка клавиатуры
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        // Добавляем кнопки в первую строчку клавиатуры
+        keyboardFirstRow.add(new KeyboardButton("Привет"));
+
+        // Вторая строчка клавиатуры
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        // Добавляем кнопки во вторую строчку клавиатуры
+        keyboardSecondRow.add(new KeyboardButton("Помощь"));
+
+        // Добавляем все строчки клавиатуры в список
+        keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboardSecondRow);
+        // и устанваливаем этот список нашей клавиатуре
+        replyKeyboardMarkup.setKeyboard(keyboard);
+    }
+//    private InlineKeyboardMarkup getInline() {
+//        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+//        List<InlineKeyboardButton> buttons1 = new ArrayList<>();
+//        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+//        inlineKeyboardButton.setText("Кнопка");
+//        inlineKeyboardButton.setCallbackData("17");
+//
+//        buttons1.add(inlineKeyboardButton);
+//        buttons.add(buttons1);
+//
+//        InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
+//        markupKeyboard.setKeyboard(buttons);
+//        return markupKeyboard;
+//    }
+
+    //////////////
+
+
+
+    /**
+     * Метод для приема сообщений.
+     *
+     * @param update Содержит сообщение от пользователя.
+     */
+    @Override
+    public void onUpdateReceived(Update update) {
+        try {
+            SendMessage sendMessage = null;
+            if (update.hasMessage()) {
+                sendMessage = messageService.doMessage(update);
+            } else if (update.hasCallbackQuery()) {
+                sendMessage = messageService.doCallback(update);
+            }
+
+            if (nonNull(sendMessage)) {
+                execute(sendMessage);
+            }
+        } catch (TelegramApiException e) {
+            log.error("Exception: ", e);
+        }
     }
 }

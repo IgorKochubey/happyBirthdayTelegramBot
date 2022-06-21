@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.facade.BotFacade;
 import com.example.demo.model.Birthday;
-import com.example.demo.schedulers.BirthdayCreationChatSchedule;
-import com.example.demo.service.BirthdayService;
+import com.example.demo.scheduler.BirthdayCreationChatSchedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,20 +12,26 @@ import java.util.List;
 
 @RestController
 public class BirthdayController {
+    private final BirthdayCreationChatSchedule schedule;
+    private final BotFacade botFacade;
 
-    @Autowired
-    private BirthdayService birthdayService;
-
-    @Autowired
-    private BirthdayCreationChatSchedule schedule;
+    public BirthdayController(BirthdayCreationChatSchedule schedule, BotFacade botFacade) {
+        this.schedule = schedule;
+        this.botFacade = botFacade;
+    }
 
     @GetMapping("/birthdays")
     private List<Birthday> getAllBirthdays() {
-        return birthdayService.getAllBirthdays();
+        return botFacade.getAllBirthdays();
     }
 
     @PostMapping("/runScheduler")
     private void runScheduler() {
         schedule.scheduleFixedDelayTask();
+    }
+
+    @GetMapping("/smiles")
+    private String smiles() {
+        return botFacade.getRandomEmoji();
     }
 }
