@@ -19,4 +19,6 @@ public interface BirthdayRepository extends CrudRepository<Birthday, Integer> {
     List<Birthday> findByBirthdayDate(LocalDate birthdayDate);
 
     List<Birthday> findByChatIdAndResponsibleTrue(Long chatId);
+
+    void deleteBirthdayByChatIdAndUserId(Long chatId, Long userId);
 }
