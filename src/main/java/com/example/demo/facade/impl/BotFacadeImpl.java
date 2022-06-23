@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -22,6 +23,8 @@ import static org.apache.commons.lang3.BooleanUtils.isFalse;
 @Service
 @Transactional
 public class BotFacadeImpl implements BotFacade {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu");
+
     private final BirthdayService birthdayService;
     private final EmojiService emojiService;
     private final KeyboardService keyboardService;
@@ -94,10 +97,21 @@ public class BotFacadeImpl implements BotFacade {
             userName = user.getFirstName() + " " + user.getLastName();
         }
 
-        LocalDate localDate = LocalDate.parse(birthdayDate + "-" + 1900, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
+        String[] split = birthdayDate.split("-");
+        String day = split[0];
+        Month month = Month.valueOf(split[1]);
+        String monthValue = String.valueOf(month.getValue());
+        LocalDate localDate = LocalDate.parse(formatDate(day) + "-" + formatDate(monthValue) + "-" + 1900, DATE_TIME_FORMATTER);
         Long userId = new Long(user.getId());
         Birthday birthday = new Birthday(chatId, userId, localDate, userName);
         birthdayService.saveOrUpdate(birthday);
+    }
+
+    private String formatDate(String value) {
+        if (value.length() == 1) {
+            return "0" + value;
+        }
+        return value;
     }
 
     @Override

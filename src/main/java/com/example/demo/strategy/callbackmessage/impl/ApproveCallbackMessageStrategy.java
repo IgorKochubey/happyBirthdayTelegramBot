@@ -28,7 +28,7 @@ public class ApproveCallbackMessageStrategy implements CallbackMessageStrategy {
         botFacade.createNewBirthday(user, chatId, birthdayDate);
 
         USER_BIRTHDAY_CACHE.remove(userId);
-        return sendMessageFactory.createSendMessage(chatId, "Saved: " + birthdayDate);
+        return sendMessageFactory.createSendMessage(chatId, "Saved");
     }
 
     @Override
