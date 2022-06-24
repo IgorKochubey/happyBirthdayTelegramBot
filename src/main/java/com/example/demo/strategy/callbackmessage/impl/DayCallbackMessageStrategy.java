@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 @Service
 public class DayCallbackMessageStrategy implements CallbackMessageStrategy {
-    private final List<String> DAYS_VALUES = IntStream.range(0, 31)
+    private final List<String> DAYS_VALUES = IntStream.range(1, 32)
             .boxed()
             .map(String::valueOf)
             .collect(Collectors.toList());
