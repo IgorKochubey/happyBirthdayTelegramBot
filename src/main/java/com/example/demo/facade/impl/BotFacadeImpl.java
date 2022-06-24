@@ -15,7 +15,9 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
@@ -86,16 +88,24 @@ public class BotFacadeImpl implements BotFacade {
             return "Sorry, but the user's birthday was not found for this chat";
         }
 
+        if (birthdayByUserIdAndChatId.isResponsible()) {
+            return "Sorry, but you are responsible for this chat";
+        }
+
         birthdayService.remove(chatId, userId);
         return "Your birthday row was deleted";
     }
 
     @Override
     public void createNewBirthday(User user, Long chatId, String birthdayDate) {
-        String userName = user.getUserName();
-        if (StringUtils.isEmpty(userName)) {
-            userName = user.getFirstName() + " " + user.getLastName();
-        }
+        String firstName = StringUtils.defaultString(user.getFirstName());
+        String lastName = StringUtils.defaultString(user.getLastName());
+        String nickName = StringUtils.defaultString(user.getUserName());
+
+        List<String> names = Arrays.asList(firstName, lastName, nickName);
+        String fullName = names.stream()
+                .filter(StringUtils::isNotEmpty)
+                .collect(Collectors.joining(" "));
 
         String[] split = birthdayDate.split("-");
         String day = split[0];
@@ -103,7 +113,7 @@ public class BotFacadeImpl implements BotFacade {
         String monthValue = String.valueOf(month.getValue());
         LocalDate localDate = LocalDate.parse(formatDate(day) + "-" + formatDate(monthValue) + "-" + 1900, DATE_TIME_FORMATTER);
         Long userId = new Long(user.getId());
-        Birthday birthday = new Birthday(chatId, userId, localDate, userName);
+        Birthday birthday = new Birthday(chatId, userId, localDate, fullName);
         birthdayService.saveOrUpdate(birthday);
     }
 
