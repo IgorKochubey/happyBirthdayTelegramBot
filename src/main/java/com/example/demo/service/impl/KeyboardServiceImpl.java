@@ -43,8 +43,9 @@ public class KeyboardServiceImpl implements KeyboardService {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>(partitions);
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(keyboard);
-        return sendMessageFactory.createSendMessage(chatId, "Choose month:")
-                .setReplyMarkup(inlineKeyboardMarkup);
+        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, "Choose month:");
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+        return sendMessage;
     }
 
     @Override
@@ -59,8 +60,10 @@ public class KeyboardServiceImpl implements KeyboardService {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>(partitions);
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(keyboard);
-        return sendMessageFactory.createSendMessage(chatId, "Choose day:")
-                .setReplyMarkup(inlineKeyboardMarkup);
+
+        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, "Choose day:");
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+        return sendMessage;
     }
 
     @Override
@@ -71,14 +74,16 @@ public class KeyboardServiceImpl implements KeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(new ArrayList<>(Collections.singletonList(keyboardButtonsRow)));
-        return sendMessageFactory.createSendMessage(chatId, "Save:")
-                .setReplyMarkup(inlineKeyboardMarkup);
+        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, "Save:");
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+        return sendMessage;
     }
 
     private InlineKeyboardButton getInlineKeyboardButton(String name) {
-        return new InlineKeyboardButton()
-                .setText(name)
-                .setCallbackData(name);
+        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+        inlineKeyboardButton.setText(name);
+        inlineKeyboardButton.setCallbackData(name);
+        return inlineKeyboardButton;
     }
 
     @Override

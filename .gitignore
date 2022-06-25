@@ -58,3 +58,5 @@ build/
 .vscode/
 
 .mvn
+
+/src/main/resources/secret.properties

@@ -7,10 +7,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 @Component
 public class SendMessageFactoryImpl implements SendMessageFactory {
     @Override
-    public SendMessage createSendMessage(long chatId, String s) {
-        return new SendMessage()
-                .setChatId(chatId)
-                .enableMarkdown(true)
-                .setText(s);
+    public SendMessage createSendMessage(Long chatId, String text) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId.toString());
+        sendMessage.enableMarkdown(true);
+        sendMessage.setText(text);
+        return sendMessage;
     }
 }

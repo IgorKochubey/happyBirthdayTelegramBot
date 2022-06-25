@@ -5,13 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 import static java.util.Objects.nonNull;
@@ -20,9 +19,17 @@ import static java.util.Objects.nonNull;
 @Service
 public class Bot extends TelegramLongPollingBot {
     private final MessageService messageService;
+    private final TelegramBotsApi telegramBotsApi;
 
-    public Bot(MessageService messageService) {
+    public Bot(MessageService messageService, TelegramBotsApi telegramBotsApi) {
         this.messageService = messageService;
+        this.telegramBotsApi = telegramBotsApi;
+    }
+
+
+    @PostConstruct
+    public void postConstruct() throws TelegramApiException {
+        telegramBotsApi.registerBot(this);
     }
 
     @Value("${bot.token}")
@@ -83,7 +90,7 @@ public class Bot extends TelegramLongPollingBot {
     /**
      * Метод для отправки сообщения.
      *
-     * @param sendMessage  содержит id чата и текст
+     * @param sendMessage содержит id чата и текст
      */
     public void executeMessage(SendMessage sendMessage) {
         try {
