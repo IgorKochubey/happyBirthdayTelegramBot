@@ -4,30 +4,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+
+import static java.util.Objects.nonNull;
 
 @Slf4j
 @SpringBootApplication
 @EnableScheduling
-@PropertySource(value = { "classpath:application.properties","classpath:secret.properties" })
+@PropertySource(value = {"classpath:application.properties", "classpath:secret.properties"})
 public class DemoApplication extends SpringBootServletInitializer {
-    private static final String BOT_BEAN_NAME = "bot";
-
     public static void main(String[] args) {
-        ApiContextInitializer.init();
-        ConfigurableApplicationContext context = SpringApplication.run(DemoApplication.class, args);
-        Bot bot = (Bot) context.getBean(BOT_BEAN_NAME);
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-
-        try {
-            telegramBotsApi.registerBot(bot);
-        } catch (TelegramApiRequestException e) {
-            log.error("Exception: ", e);
+        if(nonNull(args)) {
+            for (String arg : args) {
+                System.out.println("arg = " + arg);
+            }
         }
+        SpringApplication.run(DemoApplication.class, args);
     }
 }
