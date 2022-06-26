@@ -1,10 +1,10 @@
 CREATE SEQUENCE birthday_id_seq;
 CREATE TABLE birthday
 (
-    id integer NOT NULL DEFAULT nextval('birthday_id_seq'),
-    user_id integer NOT NULL,
+    id bigint NOT NULL DEFAULT nextval('birthday_id_seq'),
+    user_id bigint NOT NULL,
     user_name text DEFAULT NULL ,
-    chat_id integer NOT NULL,
+    chat_id bigint NOT NULL,
     birthday_date date DEFAULT NULL,
     responsible boolean NOT NULL,
     PRIMARY KEY (id)

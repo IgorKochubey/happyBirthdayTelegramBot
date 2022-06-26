@@ -112,7 +112,7 @@ public class BotFacadeImpl implements BotFacade {
         Month month = Month.valueOf(split[1]);
         String monthValue = String.valueOf(month.getValue());
         LocalDate localDate = LocalDate.parse(formatDate(day) + "-" + formatDate(monthValue) + "-" + 1900, DATE_TIME_FORMATTER);
-        Long userId = new Long(user.getId());
+        Long userId = user.getId();
         Birthday birthday = new Birthday(chatId, userId, localDate, fullName);
         birthdayService.saveOrUpdate(birthday);
     }
