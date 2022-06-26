@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -13,6 +14,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 @Slf4j
 @SpringBootApplication
 @EnableScheduling
+@PropertySource(value = { "classpath:application.properties","classpath:secret.properties" })
 public class DemoApplication extends SpringBootServletInitializer {
     private static final String BOT_BEAN_NAME = "bot";
 
