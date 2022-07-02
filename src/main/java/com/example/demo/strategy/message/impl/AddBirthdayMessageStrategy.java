@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.util.Optional;
+
 @Service
 public class AddBirthdayMessageStrategy implements MessageStrategy {
     private final BotFacade botFacade;
@@ -17,8 +19,8 @@ public class AddBirthdayMessageStrategy implements MessageStrategy {
 
     @Transactional
     @Override
-    public SendMessage getSendMessage(User user, Long chatId) {
-        Long userId = Long.valueOf(user.getId());
+    public Optional<SendMessage> getSendMessage(User user, Long chatId) {
+        Long userId = user.getId();
         return botFacade.getCreateBirthdayMessage(chatId, userId);
     }
 

@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.util.Optional;
+
 @Service
 public class SetResponsibleBirthdayMessageStrategy implements MessageStrategy {
     private final SendMessageFactory sendMessageFactory;
@@ -20,9 +22,11 @@ public class SetResponsibleBirthdayMessageStrategy implements MessageStrategy {
 
     @Transactional
     @Override
-    public SendMessage getSendMessage(User user, Long chatId) {
-        Long userId = Long.valueOf(user.getId());
-        return sendMessageFactory.createSendMessage(chatId, botFacade.setResponsibleBirthday(chatId, userId));
+    public Optional<SendMessage> getSendMessage(User user, Long chatId) {
+        Long userId = user.getId();
+        String responsibleMessage = botFacade.setResponsibleBirthday(chatId, userId);
+        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, responsibleMessage);
+        return Optional.of(sendMessage);
     }
 
     @Override

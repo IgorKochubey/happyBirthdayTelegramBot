@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BotFacade {
     int COUNT_OF_RESPONSIBLE_USERS_IN_CHAT = 2;
@@ -21,5 +22,5 @@ public interface BotFacade {
 
     List<Birthday> getAllBirthdays();
 
-    SendMessage getCreateBirthdayMessage(Long chatId, Long userId);
+    Optional<SendMessage> getCreateBirthdayMessage(Long chatId, Long userId);
 }

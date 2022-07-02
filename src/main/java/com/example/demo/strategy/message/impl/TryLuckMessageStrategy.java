@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.util.Optional;
+
 @Service
 public class TryLuckMessageStrategy implements MessageStrategy {
     private final SendMessageFactory sendMessageFactory;
@@ -18,8 +20,10 @@ public class TryLuckMessageStrategy implements MessageStrategy {
     }
 
     @Override
-    public SendMessage getSendMessage(User user, Long chatId) {
-        return sendMessageFactory.createSendMessage(chatId, botFacade.getRandomEmoji());
+    public Optional<SendMessage> getSendMessage(User user, Long chatId) {
+        String randomEmoji = botFacade.getRandomEmoji();
+        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, randomEmoji);
+        return Optional.of(sendMessage);
     }
 
     @Override

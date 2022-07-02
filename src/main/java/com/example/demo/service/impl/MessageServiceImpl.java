@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -45,10 +46,10 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public SendMessage doMessage(Update update) {
+    public Optional<SendMessage> doMessage(Update update) {
         Message message = update.getMessage();
         if (!message.hasText()) {
-            return null;
+            return Optional.empty();
         }
 
         Long chatId = message.getChatId();
