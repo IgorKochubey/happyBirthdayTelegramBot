@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.demo.service.impl.KeyboardServiceImpl.CHOOSE_MONTH;
+
 @Service
 public class MonthCallbackMessageStrategy implements CallbackMessageStrategy {
     private final List<String> MONTH_VALUES = Arrays.stream(Month.values())
@@ -25,8 +27,13 @@ public class MonthCallbackMessageStrategy implements CallbackMessageStrategy {
     }
 
     @Override
-    public Optional<SendMessage> getSendMessage(User user, Long chatId, String message){
+    public Optional<SendMessage> getSendMessage(User user, Long chatId, String message) {
         Long userId = user.getId();
+        String userMessage = USER_BIRTHDAY_CACHE.get(userId);
+        if (!CHOOSE_MONTH.equals(userMessage)) {
+            return Optional.empty();
+        }
+
         USER_BIRTHDAY_CACHE.put(userId, message);
         Month month = Month.valueOf(message);
         SendMessage sendMessage = keyboardService.sendInlineKeyBoardMessageDay(chatId, month);
