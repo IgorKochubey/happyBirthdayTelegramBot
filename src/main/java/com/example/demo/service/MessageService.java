@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.Optional;
 
 public interface MessageService {
-    SendMessage doCallback(Update update);
+    Optional<SendMessage> doCallback(Update update);
 
     Optional<SendMessage> doMessage(Update update);
 }

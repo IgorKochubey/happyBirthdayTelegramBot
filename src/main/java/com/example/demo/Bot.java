@@ -77,7 +77,7 @@ public class Bot extends TelegramLongPollingBot {
         if (update.hasMessage()) {
             sendMessage = messageService.doMessage(update);
         } else if (update.hasCallbackQuery()) {
-            sendMessage = Optional.ofNullable(messageService.doCallback(update));
+            sendMessage = messageService.doCallback(update);
         }
 
         sendMessage.ifPresent(this::executeMessage);

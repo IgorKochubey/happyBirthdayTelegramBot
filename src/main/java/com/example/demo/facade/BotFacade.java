@@ -22,5 +22,5 @@ public interface BotFacade {
 
     List<Birthday> getAllBirthdays();
 
-    Optional<SendMessage> getCreateBirthdayMessage(Long chatId, Long userId);
+    SendMessage getCreateBirthdayMessage(Long chatId, Long userId);
 }

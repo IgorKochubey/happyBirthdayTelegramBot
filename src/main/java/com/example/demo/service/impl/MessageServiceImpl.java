@@ -34,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
     private String botName;
 
     @Override
-    public SendMessage doCallback(Update update) {
+    public Optional<SendMessage> doCallback(Update update) {
         String message = replaceMessage(update.getCallbackQuery().getData());
         User user = update.getCallbackQuery().getFrom();
         Long chatId = update.getCallbackQuery().getMessage().getChatId();
