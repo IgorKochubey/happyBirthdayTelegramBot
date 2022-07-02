@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,11 +25,12 @@ public class MonthCallbackMessageStrategy implements CallbackMessageStrategy {
     }
 
     @Override
-    public SendMessage getSendMessage(User user, Long chatId, String message){
-        Long userId = new Long(user.getId());
+    public Optional<SendMessage> getSendMessage(User user, Long chatId, String message){
+        Long userId = user.getId();
         USER_BIRTHDAY_CACHE.put(userId, message);
         Month month = Month.valueOf(message);
-        return keyboardService.sendInlineKeyBoardMessageDay(chatId, month);
+        SendMessage sendMessage = keyboardService.sendInlineKeyBoardMessageDay(chatId, month);
+        return Optional.of(sendMessage);
     }
 
     @Override

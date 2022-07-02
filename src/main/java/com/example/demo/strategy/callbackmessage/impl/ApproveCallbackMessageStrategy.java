@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.util.Optional;
+
 import static com.example.demo.service.KeyboardService.YES;
 
 @Service
@@ -22,13 +24,14 @@ public class ApproveCallbackMessageStrategy implements CallbackMessageStrategy {
 
     @Transactional
     @Override
-    public SendMessage getSendMessage(User user, Long chatId, String message) {
-        Long userId = new Long(user.getId());
+    public Optional<SendMessage> getSendMessage(User user, Long chatId, String message) {
+        Long userId = user.getId();
         String birthdayDate = USER_BIRTHDAY_CACHE.get(userId);
         botFacade.createNewBirthday(user, chatId, birthdayDate);
 
         USER_BIRTHDAY_CACHE.remove(userId);
-        return sendMessageFactory.createSendMessage(chatId, "Saved");
+        SendMessage saved = sendMessageFactory.createSendMessage(chatId, "Saved");
+        return Optional.of(saved);
     }
 
     @Override

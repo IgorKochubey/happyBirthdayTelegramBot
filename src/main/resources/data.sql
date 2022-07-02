@@ -10,4 +10,3 @@ CREATE TABLE birthday
     PRIMARY KEY (id)
 );
 CREATE UNIQUE INDEX birthday_userChatId ON birthday (user_id, chat_id);
-CREATE UNIQUE INDEX birthday_userBirthday ON birthday (user_id, birthday_date);

@@ -3,8 +3,10 @@ package com.example.demo.service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public interface MessageService {
-    SendMessage doCallback(Update update);
+import java.util.Optional;
 
-    SendMessage doMessage(Update update);
+public interface MessageService {
+    Optional<SendMessage> doCallback(Update update);
+
+    Optional<SendMessage> doMessage(Update update);
 }

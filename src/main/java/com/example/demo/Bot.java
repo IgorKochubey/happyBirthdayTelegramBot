@@ -13,8 +13,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
-import static java.util.Objects.nonNull;
-
 @Slf4j
 @Service
 public class Bot extends TelegramLongPollingBot {
@@ -75,16 +73,14 @@ public class Bot extends TelegramLongPollingBot {
      */
     @Override
     public void onUpdateReceived(Update update) {
-        SendMessage sendMessage = null;
+        Optional<SendMessage> sendMessage = Optional.empty();
         if (update.hasMessage()) {
             sendMessage = messageService.doMessage(update);
         } else if (update.hasCallbackQuery()) {
             sendMessage = messageService.doCallback(update);
         }
 
-        if (nonNull(sendMessage)) {
-            executeMessage(sendMessage);
-        }
+        sendMessage.ifPresent(this::executeMessage);
     }
 
     /**
