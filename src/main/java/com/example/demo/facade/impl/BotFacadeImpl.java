@@ -17,8 +17,11 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.demo.service.impl.KeyboardServiceImpl.CHOOSE_MONTH;
+import static com.example.demo.strategy.callbackmessage.CallbackMessageStrategy.USER_BIRTHDAY_CACHE;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
 
@@ -41,11 +44,6 @@ public class BotFacadeImpl implements BotFacade {
 
     @Override
     public String unsetResponsibleBirthday(Long chatId, Long userId) {
-        long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
-        if (countResponsibleOfChat != COUNT_OF_RESPONSIBLE_USERS_IN_CHAT) {
-            return "Sorry, but this chat should has " + COUNT_OF_RESPONSIBLE_USERS_IN_CHAT + " responsible users";
-        }
-
         Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userId, chatId);
         if (isNull(birthdayByUserIdAndChatId)) {
             return "Sorry, but the user's birthday was not found for this chat";
@@ -53,6 +51,11 @@ public class BotFacadeImpl implements BotFacade {
 
         if (isFalse(birthdayByUserIdAndChatId.isResponsible())) {
             return "Sorry, but you are not responsible for this chat";
+        }
+
+        long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
+        if (countResponsibleOfChat != COUNT_OF_RESPONSIBLE_USERS_IN_CHAT) {
+            return "Sorry, but this chat should has " + COUNT_OF_RESPONSIBLE_USERS_IN_CHAT + " responsible users";
         }
 
         birthdayByUserIdAndChatId.setResponsible(false);
@@ -129,12 +132,17 @@ public class BotFacadeImpl implements BotFacade {
     }
 
     @Override
-    public SendMessage getCreateBirthdayMessage(Long chatId, Long userId) {
+    public Optional<SendMessage> getCreateBirthdayMessage(Long chatId, Long userId) {
         boolean exists = birthdayService.isExistBirthdayByUserIdAndChatId(userId, chatId);
         if (exists) {
-            return sendMessageFactory.createSendMessage(chatId, "Your birthday for this chat already exist");
+            SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, "Your birthday for this chat already exist");
+            return Optional.of(sendMessage);
+        } else if (USER_BIRTHDAY_CACHE.containsKey(userId)) {
+            return Optional.empty();
         } else {
-            return keyboardService.sendInlineKeyBoardMessageMonth(chatId);
+            USER_BIRTHDAY_CACHE.put(userId, CHOOSE_MONTH);
+            SendMessage sendMessage = keyboardService.sendInlineKeyBoardMessageMonth(chatId);
+            return Optional.of(sendMessage);
         }
     }
 

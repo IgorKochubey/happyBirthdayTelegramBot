@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.time.Month;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +20,10 @@ public class DayCallbackMessageStrategy implements CallbackMessageStrategy {
             .map(String::valueOf)
             .collect(Collectors.toList());
 
+    private final List<String> MONTH_VALUES = Arrays.stream(Month.values())
+            .map(Enum::name)
+            .collect(Collectors.toList());
+
     private final KeyboardService keyboardService;
 
     public DayCallbackMessageStrategy(KeyboardService keyboardService) {
@@ -28,6 +34,11 @@ public class DayCallbackMessageStrategy implements CallbackMessageStrategy {
     public Optional<SendMessage> getSendMessage(User user, Long chatId, String message) {
         Long userId = user.getId();
         String birthdayMonthStr = USER_BIRTHDAY_CACHE.get(userId);
+
+        if (!MONTH_VALUES.contains(birthdayMonthStr)) {
+            return Optional.empty();
+        }
+
         USER_BIRTHDAY_CACHE.put(userId, message + "-" + birthdayMonthStr);
         SendMessage sendMessage = keyboardService.sendInlineKeyBoardMessageConfirmation(chatId);
         return Optional.of(sendMessage);

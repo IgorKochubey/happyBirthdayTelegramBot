@@ -27,6 +27,9 @@ public class KeyboardServiceImpl implements KeyboardService {
     private static final int FIRST_DAY_OF_MONTH = 1;
     private static final int LAST_DAY_OF_MONTH = 1;
 
+    private static final String CHOOSE_DAY = "Choose day:";
+    private static final String SAVE = "Save and agree to the storage and processing of your data:";
+
     private final SendMessageFactory sendMessageFactory;
 
     public KeyboardServiceImpl(SendMessageFactory sendMessageFactory) {

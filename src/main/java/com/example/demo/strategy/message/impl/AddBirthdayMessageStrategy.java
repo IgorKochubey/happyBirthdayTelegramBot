@@ -21,8 +21,7 @@ public class AddBirthdayMessageStrategy implements MessageStrategy {
     @Override
     public Optional<SendMessage> getSendMessage(User user, Long chatId) {
         Long userId = user.getId();
-        SendMessage sendMessage = botFacade.getCreateBirthdayMessage(chatId, userId);
-        return Optional.of(sendMessage);
+        return botFacade.getCreateBirthdayMessage(chatId, userId);
     }
 
     @Override

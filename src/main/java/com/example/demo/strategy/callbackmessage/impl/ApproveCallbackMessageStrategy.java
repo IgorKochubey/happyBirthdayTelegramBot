@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.util.Optional;
 
 import static com.example.demo.service.KeyboardService.YES;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class ApproveCallbackMessageStrategy implements CallbackMessageStrategy {
@@ -27,6 +28,9 @@ public class ApproveCallbackMessageStrategy implements CallbackMessageStrategy {
     public Optional<SendMessage> getSendMessage(User user, Long chatId, String message) {
         Long userId = user.getId();
         String birthdayDate = USER_BIRTHDAY_CACHE.get(userId);
+        if (isBlank(birthdayDate)) {
+            return Optional.empty();
+        }
         botFacade.createNewBirthday(user, chatId, birthdayDate);
 
         USER_BIRTHDAY_CACHE.remove(userId);
