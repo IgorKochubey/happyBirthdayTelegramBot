@@ -44,11 +44,6 @@ public class BotFacadeImpl implements BotFacade {
 
     @Override
     public String unsetResponsibleBirthday(Long chatId, Long userId) {
-        long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
-        if (countResponsibleOfChat != COUNT_OF_RESPONSIBLE_USERS_IN_CHAT) {
-            return "Sorry, but this chat should has " + COUNT_OF_RESPONSIBLE_USERS_IN_CHAT + " responsible users";
-        }
-
         Birthday birthdayByUserIdAndChatId = birthdayService.getBirthdayByUserIdAndChatId(userId, chatId);
         if (isNull(birthdayByUserIdAndChatId)) {
             return "Sorry, but the user's birthday was not found for this chat";
@@ -56,6 +51,11 @@ public class BotFacadeImpl implements BotFacade {
 
         if (isFalse(birthdayByUserIdAndChatId.isResponsible())) {
             return "Sorry, but you are not responsible for this chat";
+        }
+
+        long countResponsibleOfChat = birthdayService.getCountResponsibleOfChat(chatId);
+        if (countResponsibleOfChat != COUNT_OF_RESPONSIBLE_USERS_IN_CHAT) {
+            return "Sorry, but this chat should has " + COUNT_OF_RESPONSIBLE_USERS_IN_CHAT + " responsible users";
         }
 
         birthdayByUserIdAndChatId.setResponsible(false);
