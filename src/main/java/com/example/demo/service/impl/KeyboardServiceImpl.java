@@ -43,7 +43,7 @@ public class KeyboardServiceImpl implements KeyboardService {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>(partitions);
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(keyboard);
-        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, "Choose month:");
+        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, CHOOSE_MONTH);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         return sendMessage;
     }
@@ -61,7 +61,7 @@ public class KeyboardServiceImpl implements KeyboardService {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(keyboard);
 
-        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, "Choose day:");
+        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, CHOOSE_DAY);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         return sendMessage;
     }
@@ -74,7 +74,7 @@ public class KeyboardServiceImpl implements KeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(new ArrayList<>(Collections.singletonList(keyboardButtonsRow)));
-        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, "Save:");
+        SendMessage sendMessage = sendMessageFactory.createSendMessage(chatId, SAVE);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         return sendMessage;
     }
