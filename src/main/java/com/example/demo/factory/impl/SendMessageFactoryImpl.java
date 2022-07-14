@@ -12,6 +12,7 @@ public class SendMessageFactoryImpl implements SendMessageFactory {
         sendMessage.setChatId(chatId.toString());
         sendMessage.enableMarkdown(true);
         sendMessage.setText(text);
+        sendMessage.setDisableNotification(true);
         return sendMessage;
     }
 }
